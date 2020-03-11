@@ -16,7 +16,7 @@ public class Encode {
     private byte[] data;
     private String path;
     private Dictionary dictionary;
-    private long[][] encodeData;
+    private byte[][] encodeData;
 
     public Encode(String path, Dictionary dictionary) throws IOException {
 
@@ -30,12 +30,12 @@ public class Encode {
         }
 
         this.dictionary = dictionary;
-        this.encodeData = new long[data.length][];
-        int word;
+        this.encodeData = new byte[data.length][];
+        int index;
         for(int i = 0; i < data.length; i++){
 
-            word = data[i];
-            encodeData[i] = dictionary.getWord(word);
+            index = data[i];
+            encodeData[i] = dictionary.getWord(index);
         }
 
         JOptionPane.showConfirmDialog(null, "Continue");
@@ -43,15 +43,16 @@ public class Encode {
 
     public void toFile(String dest){
 
+        byte[] wholeData = new byte[encodeData.length*2];
+
         try {
             FileOutputStream fos = new FileOutputStream(dest);
-            byte[] temp;
-            for(int i = 0; i < encodeData.length; i++){
-                temp = longToBytes(encodeData[i][0]);
-                fos.write(temp[6]);
-                fos.write(temp[7]);
-                //fos.write("\n".getBytes());
+            for(int i = 0; i < wholeData.length; i+=2){
+                wholeData[i] = encodeData[i/2][0];
+                wholeData[i+1] = encodeData[i/2][1];
             }
+
+            fos.write(wholeData);
         }catch(IOException ex){
 
             System.out.println("Writing Error !");

@@ -10,14 +10,51 @@ import java.nio.file.Paths;
 
 public class Decode {
 
-    private byte[] decodeData;
+    private int[] decodeData;
     private String path;
     private Dictionary dictionary;
-    private long[][] encodeData;
+    private byte[] encodeData;
 
     public Decode(String path, Dictionary dictionary){
+        Path tempPath = Paths.get(path);
+        try {
+            encodeData = Files.readAllBytes(tempPath);
+        }catch (IOException ex){
 
-        Files temp =
+            System.out.println("Load File Error !");
+        }
+
+        byte[][] encodeTemp = new byte[encodeData.length/2][2];
+
+        for(int i = 0; i < encodeTemp.length; i++){
+           encodeTemp[i][0] = encodeData[i*2];
+           encodeTemp[i][1] = encodeData[(i*2)+1];
+        }
+
+        this.dictionary = dictionary;
+        this.decodeData = new int[encodeData.length/2];
+
+
+        for(int i = 0; i < encodeTemp.length; i++){
+               decodeData[i] = dictionary.getValue(encodeTemp[i]);
+        }
+
+
+    }
+
+    public void toFile(String dest){
+
+        try {
+            FileOutputStream fos = new FileOutputStream(dest);
+            for(int i = 0; i < decodeData.length; i+=2){
+                fos.write((char)decodeData[i]);
+            }
+
+        }catch(IOException ex){
+
+            System.out.println("Writing Error !");
+        }
+
 
     }
 

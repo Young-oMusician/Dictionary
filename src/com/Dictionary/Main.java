@@ -16,6 +16,7 @@ public class Main {
 
 
             Decode decode = new Decode("D:\\Bitner\\Programowanko\\Java\\JavaPodstawyMoje\\Dictionary\\essa.txt", a);
+            decode.toFile("D:\\Bitner\\Programowanko\\Java\\JavaPodstawyMoje\\Dictionary\\decode.txt");
         }catch(IOException ex){
 
             System.out.println("Load File Error !");

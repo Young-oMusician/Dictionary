@@ -9,7 +9,9 @@ import java.util.Map;
 public class Dictionary extends Object{
 
     private long[][] H = new long[7][];
-    private Map<byte[], byte[]> T = new HashMap<byte[], byte[]>();
+    private Map<Integer, byte[]> TEncode = new HashMap<Integer, byte[]>();
+    private Map<byte[], Integer> TDecode = new HashMap<byte[], Integer>();
+
 
     Dictionary(){
         BitSet[] HTemp = new BitSet[7];
@@ -44,14 +46,20 @@ public class Dictionary extends Object{
         }
         for(int i = 0; i < 255; i++){
 
-            T.put(ByteBuffer.allocate(2).putInt(i).array(),TTemp[i].toByteArray());
+            TEncode.put(i,TTemp[i].toByteArray());
+            TDecode.put(TTemp[i].toByteArray(),i);
         }
         int a = 0;
     }
 
-    public long[] getWord(int index){
+    public byte[] getWord(int index){
 
-        return T.get();
+        return TEncode.get(index);
+    }
+
+    public int getValue(byte[] word){
+
+        return TDecode.get(word);
     }
 
 }
