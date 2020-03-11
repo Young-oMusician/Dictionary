@@ -37,6 +37,7 @@ public class Decode {
 
         for(int i = 0; i < encodeTemp.length; i++){
                decodeData[i] = dictionary.getValue(encodeTemp[i]);
+               int tutajSkonczylismy;
         }
 
 
