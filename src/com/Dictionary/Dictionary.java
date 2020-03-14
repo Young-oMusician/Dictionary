@@ -10,7 +10,7 @@ public class Dictionary extends Object{
 
     private long[][] H = new long[7][];
     private Map<Integer, byte[]> TEncode = new HashMap<Integer, byte[]>();
-    private Map<byte[], Integer> TDecode = new HashMap<byte[], Integer>();
+    private Map<Integer, Integer> TDecode = new HashMap<Integer, Integer>();
 
 
     Dictionary(){
@@ -40,6 +40,8 @@ public class Dictionary extends Object{
             }
         }
 
+        long[] alloc;
+
         for(int i = 0; i < 7; i++){
 
             H[i] = HTemp[i].toLongArray();
@@ -47,7 +49,12 @@ public class Dictionary extends Object{
         for(int i = 0; i < 255; i++){
 
             TEncode.put(i,TTemp[i].toByteArray());
-            TDecode.put(TTemp[i].toByteArray(),i);
+            alloc = TTemp[i].toLongArray();
+            try {
+                TDecode.put(Math.toIntExact(alloc[0]), i);
+            }catch(ArrayIndexOutOfBoundsException ex){
+                TDecode.put(0,i);
+            }
         }
         int a = 0;
     }
@@ -59,9 +66,11 @@ public class Dictionary extends Object{
 
     public int getValue(byte[] word){
 
-        return TDecode.get(word);
+        byte[] tempWord = new byte[4];
+        tempWord[3] = word[0];
+        tempWord[2] = word[1];
+        int intWord = ByteBuffer.wrap(tempWord).getInt();
+        return TDecode.get(intWord);
     }
 
 }
-
-
