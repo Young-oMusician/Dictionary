@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane fx:id="mainPane" accessibleRole="TEXT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #386e66;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
+   <effect>
+      <ColorAdjust brightness="-0.24" contrast="0.19" hue="0.02" saturation="-0.02">
+         <input>
+            <DropShadow />
+         </input>
+      </ColorAdjust>
+   </effect>
+   <children>
+      <Label fx:id="titleLabel" layoutX="525.0" layoutY="10.0" prefHeight="380.0" prefWidth="61.0" text="DTC" textFill="#f59e9e" wrapText="true">
+         <font>
+            <Font name="Impact" size="72.0" />
+         </font>
+         <effect>
+            <DropShadow blurType="ONE_PASS_BOX" color="#393939" height="0.0" offsetX="1.0" offsetY="1.0" radius="0.0" width="0.0" />
+         </effect>
+      </Label>
+      <Button fx:id="selectFileButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#selectFile" style="-fx-background-color: #22524a;" text="Select" textFill="#b9b5b5">
+         <font>
+            <Font name="Tahoma" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="saveFileButton" layoutX="68.0" layoutY="14.0" mnemonicParsing="false" onAction="#saveFile" style="-fx-background-color: #22524a;" text="Save" textFill="#b9b5b5">
+         <font>
+            <Font name="Tahoma" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="encodeButton" layoutX="211.0" layoutY="14.0" mnemonicParsing="false" onAction="#encode" style="-fx-background-color: #22524a;" text="Encode" textFill="#b9b5b5">
+         <font>
+            <Font name="Tahoma" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="decodeButton" layoutX="272.0" layoutY="14.0" mnemonicParsing="false" onAction="#decode" style="-fx-background-color: #22524a;" text="Decode" textFill="#b9b5b5">
+         <font>
+            <Font name="Tahoma" size="12.0" />
+         </font>
+      </Button>
+      <Label fx:id="selectedFileInfoLabel" layoutX="24.0" layoutY="86.0" text="Selected File:" textFill="#c6c6c6" />
+      <Label fx:id="selectedFileLabel" layoutX="24.0" layoutY="103.0" prefHeight="17.0" prefWidth="443.0" text="..." textFill="#c6c6c6" />
+      <Label fx:id="statusInfoLabel" layoutX="24.0" layoutY="148.0" text="Status:" textFill="#c6c6c6" />
+      <Label fx:id="statusLabel" layoutX="24.0" layoutY="165.0" prefHeight="17.0" prefWidth="393.0" text="..." textFill="#c6c6c6" />
+      <Button fx:id="saveAndSelectFileButton" layoutX="116.0" layoutY="14.0" mnemonicParsing="false" onAction="#saveAndSelectFile" style="-fx-background-color: #22524a;" text="Save &amp; Select" textFill="#b9b5b5">
+         <font>
+            <Font name="Tahoma" size="12.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
