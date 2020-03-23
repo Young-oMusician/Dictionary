@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_dtc" default="compile.module.dtc">
+  <dirname property="module.dtc.basedir" file="${ant.file.module_dtc}"/>
+  
+  <property name="module.jdk.home.dtc" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.dtc" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.dtc" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.dtc" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="dtc.output.dir" value="${module.dtc.basedir}/out/production/DTC"/>
+  <property name="dtc.testoutput.dir" value="${module.dtc.basedir}/out/test/DTC"/>
+  
+  <path id="dtc.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="dtc.module.production.classpath">
+    <path refid="${module.jdk.classpath.dtc}"/>
+  </path>
+  
+  <path id="dtc.runtime.production.module.classpath">
+    <pathelement location="${dtc.output.dir}"/>
+  </path>
+  
+  <path id="dtc.module.classpath">
+    <path refid="${module.jdk.classpath.dtc}"/>
+    <pathelement location="${dtc.output.dir}"/>
+  </path>
+  
+  <path id="dtc.runtime.module.classpath">
+    <pathelement location="${dtc.testoutput.dir}"/>
+    <pathelement location="${dtc.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.dtc">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.dtc">
+    <patternset refid="excluded.from.module.dtc"/>
+  </patternset>
+  
+  <path id="dtc.module.sourcepath">
+    <dirset dir="${module.dtc.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.dtc" depends="compile.module.dtc.production,compile.module.dtc.tests" description="Compile module DTC"/>
+  
+  <target name="compile.module.dtc.production" depends="register.custom.compilers" description="Compile module DTC; production classes">
+    <mkdir dir="${dtc.output.dir}"/>
+    <javac2 destdir="${dtc.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dtc}/javac">
+      <compilerarg line="${compiler.args.dtc}"/>
+      <bootclasspath refid="dtc.module.bootclasspath"/>
+      <classpath refid="dtc.module.production.classpath"/>
+      <src refid="dtc.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.dtc"/>
+    </javac2>
+    
+    <copy todir="${dtc.output.dir}">
+      <fileset dir="${module.dtc.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.dtc.tests" depends="register.custom.compilers,compile.module.dtc.production" description="compile module DTC; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.dtc" description="cleanup module">
+    <delete dir="${dtc.output.dir}"/>
+    <delete dir="${dtc.testoutput.dir}"/>
+  </target>
+</project>

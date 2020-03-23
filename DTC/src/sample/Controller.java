@@ -1,11 +1,12 @@
 package sample;
 
-import com.Dictionary.Dictionary;
-import com.EncodeDecode.Encode;
-import com.EncodeDecode.Decode;
+import Dictionary.Dictionary;
+import EncodeDecode.Encode;
+import EncodeDecode.Decode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 
@@ -16,7 +17,7 @@ import java.io.IOException;
 
 public class Controller {
 
-    private Dictionary dictionary = new Dictionary();
+
     @FXML
     private Pane mainPane;
     @FXML
@@ -39,12 +40,29 @@ public class Controller {
     private Button encodeButton;
     @FXML
     private Button decodeButton;
+    @FXML
+    private RadioButton oneErrorRadio;
+    @FXML
+    private  RadioButton twoErrorsRadio;
+
+    private Dictionary dictionary;
 
     String filePath;
     int[] buffer;
 
     public void selectFile(){
-
+        if(oneErrorRadio.isSelected()){
+            dictionary = new Dictionary(false);
+            statusLabel.setText("");
+        }
+        else if(twoErrorsRadio.isSelected()){
+            dictionary = new Dictionary(true);
+            statusLabel.setText("");
+        }
+        else{
+            statusLabel.setText("Select Program Variant");
+            return;
+        }
         FileChooser fc = new FileChooser();
         File selectedFile = fc.showOpenDialog(null);
 
@@ -53,12 +71,21 @@ public class Controller {
             this.filePath = selectedFile.getAbsolutePath();
 
         }
+        if(filePath == null){
+
+            return;
+        }
 
         this.selectedFileLabel.setText(this.filePath);
     }
 
     public void saveFile(){
 
+        if(filePath == null){
+            statusLabel.setText("There isn't any file");
+            return;
+        }
+
         String destination;
 
         FileChooser fc = new FileChooser();
@@ -74,15 +101,22 @@ public class Controller {
         }catch(FileNotFoundException ex){
 
             this.statusLabel.setText("FILE PROBLEM !!!");
+            return;
         }catch(IOException ex){
 
             this.statusLabel.setText("CANNOT SAVE TO FILE !!!");
+            return;
         }
 
         this.statusLabel.setText("FILE SAVED");
     }
 
     public void saveAndSelectFile(){
+
+        if(filePath == null){
+            statusLabel.setText("There isn't any file");
+            return;
+        }
         String destination;
 
         FileChooser fc = new FileChooser();
@@ -101,14 +135,20 @@ public class Controller {
         }catch(IOException ex){
 
             this.statusLabel.setText("CANNOT SAVE TO FILE !!!");
+            return;
         }
 
         this.filePath = destination;
+        this.selectedFileLabel.setText(destination);
         this.statusLabel.setText("FILE SAVED");
     }
 
     public void encode(){
 
+        if(filePath == null){
+            statusLabel.setText("Choose file !");
+            return;
+        }
         byte[] temp = new byte[0];
         try {
             Encode result = new Encode(filePath, dictionary);
@@ -118,22 +158,31 @@ public class Controller {
             this.statusLabel.setText("CANNOT READ FROM FILE !!!");
         }
 
+        statusLabel.setText("Encoding...");
         buffer = new int[temp.length];
         for(int i = 0; i < temp.length; i++){
 
             buffer[i] = temp[i];
         }
-
         statusLabel.setText("Encode data successfully");
 
     }
 
     public void decode(){
-
+        if(filePath == null){
+            statusLabel.setText("Choose file !");
+            return;
+        }
+        statusLabel.setText("Decoding...");
+        try {
             Decode result = new Decode(filePath, dictionary);
             buffer = result.getDecodeData();
+        }catch(Exception ex){
 
-            statusLabel.setText("Decode data successfully");
+            statusLabel.setText("Detected more errors than " + dictionary.PARITY_LENGTH/4);
+            return;
+        }
+        statusLabel.setText("Decode data successfully");
     }
 
 }

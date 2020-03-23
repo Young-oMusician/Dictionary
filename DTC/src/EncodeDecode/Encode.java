@@ -1,6 +1,6 @@
-package com.EncodeDecode;
+package EncodeDecode;
 
-import com.Dictionary.Dictionary;
+import Dictionary.Dictionary;
 
 import javax.swing.*;
 import java.io.FileOutputStream;
